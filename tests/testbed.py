@@ -212,10 +212,26 @@ def simulation_benchmark(target_model : GraphInferenceEngineTG, draft_model: Gra
             target_model.clear_kv()
             if num_large_model_steps > 0:
                 print(num_decoding_steps / num_large_model_steps)
-    print("total decoding steps: {}".format(num_decoding_steps), "large model steps: {}".format(num_large_model_steps), "avg decoding step: {}".format(num_decoding_steps / num_large_model_steps))
-    print("initialization time:{}".format(initialize_time / num_large_model_steps), "speculate time: {}".format(speculate_time / num_large_model_steps),  "verify time: {}".format(verify_time / num_large_model_steps))
-    print("large model run: {}".format(large_model_run / num_large_model_steps) , "accept loop: {}".format(accept_loop / num_large_model_steps), "kv select: {}".format(kv_select / num_large_model_steps))
-    print("small model run: {}".format(small_model_compute / num_large_model_steps) , "sample time: {}".format(sample_time / num_large_model_steps))
+    print(
+        "total decoding steps: {}".format(num_decoding_steps),
+        "large model steps: {}".format(num_large_model_steps),
+        "avg decoding step: {}".format(num_decoding_steps / num_large_model_steps),
+    )
+    print(
+        "initialization time:{:.6f}".format(initialize_time / num_large_model_steps),
+        "speculate time: {:.6f}".format(speculate_time / num_large_model_steps),
+        "verify time: {:.6f}".format(verify_time / num_large_model_steps),
+    )
+    print(
+        "large model run: {:.6f}".format(large_model_run / num_large_model_steps),
+        "accept loop: {:.6f}".format(accept_loop / num_large_model_steps),
+        "kv select: {:.6f}".format(kv_select / num_large_model_steps),
+    )
+    print("small model run: {:.6f}".format(small_model_compute / num_large_model_steps), "sample time: {:.6f}".format(sample_time / num_large_model_steps))
+
+    total_time = initialize_time + speculate_time + verify_time
+    print("total time :{:.5f}s, latency :{:.5f}s, decoding steps: {}".format(total_time, total_time / num_decoding_steps))
+
     return num_decoding_steps / num_large_model_steps
 
 
